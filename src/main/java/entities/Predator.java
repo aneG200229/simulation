@@ -20,12 +20,15 @@ public class Predator extends Creature {
         if (pathCoordinates == null || pathCoordinates.isEmpty()) {
             return;
         }
+
+        Coordinates oldCoords = this.getCoordinates();
+
         if (pathCoordinates.size() - 1 <= this.getSpeed()) {
             Coordinates herbivoreCoords = pathCoordinates.get(pathCoordinates.size() - 1);
             Entity entity = gameMap.getEntity(herbivoreCoords);
             if (entity instanceof Herbivore herbivore) {
                 hit(herbivore);
-                System.out.println("\uD83D\uDC3A на " + pathCoordinates.get(0) + " атаковал \uD83D\uDC30 на " + herbivoreCoords);
+                System.out.println("\uD83D\uDC3A на " + oldCoords + " атаковал \uD83D\uDC30 на " + herbivoreCoords);
                 if (herbivore.getHp() <= 0) {
                     System.out.println("\uD83D\uDC30 убит на координатах " + herbivoreCoords);
                     gameMap.removeEntity(herbivoreCoords);
@@ -34,9 +37,10 @@ public class Predator extends Creature {
             return;
         }
         int targetIndex = Math.min(getSpeed(), pathCoordinates.size() - 1);
+        Coordinates newCoords = pathCoordinates.get(targetIndex);
         Coordinates targetCoordinates = pathCoordinates.get(targetIndex);
         gameMap.moveEntity(this.getCoordinates(), targetCoordinates);
-        System.out.println("\uD83D\uDC3A переместился с " + this.getCoordinates() + " на " + pathCoordinates.get(targetIndex));
+        System.out.println("\uD83D\uDC3A переместился с " + oldCoords + " на " + newCoords);
 
     }
 

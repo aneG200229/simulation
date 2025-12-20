@@ -18,18 +18,22 @@ public class Herbivore extends Creature {
         if (pathCoordinates == null || pathCoordinates.isEmpty()) {
             return;
         }
+
+        Coordinates oldCoords = this.getCoordinates();
+
         if (pathCoordinates.size() - 1 <= this.getSpeed()) {
             Coordinates grassCoord = pathCoordinates.get(pathCoordinates.size() - 1);
             gameMap.removeEntity(grassCoord);
             gameMap.moveEntity(this.getCoordinates(), grassCoord);
-            System.out.println("\uD83D\uDC30 переместился с " + pathCoordinates.get(0)
+            System.out.println("\uD83D\uDC30 переместился с " + oldCoords
                     + " и съел \uD83C\uDF31 на " + grassCoord);
             return;
         }
         int targetIndex = Math.min(getSpeed(), pathCoordinates.size() - 1);
+        Coordinates newCoords = pathCoordinates.get(targetIndex);
         gameMap.moveEntity(this.getCoordinates(), pathCoordinates.get(targetIndex));
-        System.out.println("\uD83D\uDC30 переместился с " + this.getCoordinates() + " на "
-                + pathCoordinates.get(targetIndex));
+        System.out.println("\uD83D\uDC30 переместился с " + oldCoords + " на "
+                + newCoords);
     }
 
 
