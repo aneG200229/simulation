@@ -23,8 +23,14 @@ public class Menu {
                 showRunningMenu();
             }
 
-            int choice = scanner.nextInt();
-            handleChoice(choice);
+            String input = scanner.nextLine();
+            try {
+                int choice = Integer.parseInt(input);
+                handleChoice(choice);
+            }catch (NumberFormatException e){
+                System.out.println("Это не число!");
+            }
+
 
         }
     }

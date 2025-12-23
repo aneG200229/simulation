@@ -3,17 +3,17 @@ package simulation;
 import actions.Action;
 import actions.initactions.*;
 import actions.turnactions.MoveCreaturesAction;
-import actions.turnactions.SpawnGrassAction;
-import actions.turnactions.SpawnHerbivoreAction;
-import map.GameMap;
-import map.Renderer;
+import actions.turnactions.TurnSpawnAction;
+import entities.*;
+import gamemap.GameMap;
+import rendering.GameMapRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
     private final GameMap map;
-    private final Renderer renderer;
+    private final GameMapRenderer gameMapRenderer;
     private final List<Action> initActions;
     private final List<Action> turnActions;
     private int turnCounter = 0;
@@ -23,21 +23,21 @@ public class Simulation {
 
 
     public Simulation() {
-        this.map = new GameMap();
-        this.renderer = new Renderer();
+        this.map = new GameMap(6,6);
+        this.gameMapRenderer = new GameMapRenderer();
 
         this.initActions = new ArrayList<>(List.of(
-                new InitGrassAction(),
-                new InitPredatorAction(),
-                new InitTreeAction(),
-                new InitHerbivoreAction(),
-                new InitRockAction()
+                new InitSpawnAction((c) -> new Grass(), 4),
+                new InitSpawnAction(Predator::new,2),
+                new InitSpawnAction(Herbivore::new,3),
+                new InitSpawnAction((c)-> new Rock(),2),
+                new InitSpawnAction((c)-> new Tree(),2)
         ));
 
         this.turnActions = new ArrayList<>(List.of(
                 new MoveCreaturesAction(),
-                new SpawnGrassAction(),
-                new SpawnHerbivoreAction()
+                new TurnSpawnAction((c)-> new Grass(),4,(entity)-> entity instanceof Grass),
+                new TurnSpawnAction((c) -> new Herbivore(c),3,entity -> entity instanceof Herbivore)
         ));
     }
 
@@ -46,7 +46,7 @@ public class Simulation {
             action.perform(map);
         }
         System.out.println("=== СИМУЛЯЦИЯ ЗАПУЩЕНА ===");
-        renderer.drawMap(map);
+        gameMapRenderer.drawMap(map);
         System.out.println();
     }
 
@@ -57,7 +57,7 @@ public class Simulation {
         for (Action action : turnActions) {
             action.perform(map);
         }
-        renderer.drawMap(map);
+        gameMapRenderer.drawMap(map);
         System.out.println();
     }
 

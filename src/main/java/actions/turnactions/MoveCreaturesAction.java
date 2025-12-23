@@ -3,8 +3,8 @@ package actions.turnactions;
 import actions.Action;
 import entities.Creature;
 import entities.Entity;
-import map.GameMap;
-import path.Path;
+import gamemap.GameMap;
+import path.PathFinder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ public class MoveCreaturesAction extends Action {
     @Override
     public void perform(GameMap map) {
         List<Creature> creatures = new ArrayList<>();
-        Path pathFinder = new Path();
-        for (Entity entity : map.getAllEntity()) {
+        PathFinder pathFinder = new PathFinder();
+        for (Entity entity : map.getAllEntities()) {
             if (entity instanceof Creature creature) {
                 creatures.add(creature);
             }

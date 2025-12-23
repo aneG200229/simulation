@@ -1,9 +1,6 @@
 package entities;
 
-import map.Coordinates;
+import gamemap.Coordinates;
 
 public class Rock extends Entity {
-    public Rock(Coordinates coordinates) {
-        super(coordinates, "\uD83E\uDEA8");
-    }
 }
